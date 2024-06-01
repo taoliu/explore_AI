@@ -1,5 +1,8 @@
 # Instruction
 
+Use `mlx_lm` library to set up a mini web-based chatbot on Mac
+computer with M chip.
+
 ## Steps
 
 ### 1. Run `mlx_lm.server` 
