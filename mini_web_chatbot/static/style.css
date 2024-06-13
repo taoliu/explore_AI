@@ -1,17 +1,24 @@
 .message-box {
-    padding: 15px;
+    padding: 10px; /* Reduced padding */
     border-radius: 10px;
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px;
+    margin-bottom: 10px; /* Reduced margin */
     white-space: pre-wrap; /* Preserve whitespace and line breaks */
 }
+
+.message-box p {
+    margin: 0.5em 0; /* Reduced margin between paragraphs */
+}
+
 .user-message {
     background-color: #e6f7ff;
 }
+
 .system-message {
     background-color: #ffffcc;
 }
+
 .label {
     font-weight: bold;
     font-size: 1.2em;
@@ -19,12 +26,14 @@
     display: block;
     color: #333;
 }
+
 .history-label {
     font-weight: bold;
     font-size: 1.2em;
     margin-top: 20px;
     color: #333;
 }
+
 #loading {
     display: inline-block;
     font-size: 1.5em;
@@ -32,12 +41,12 @@
     margin-left: 10px;
     vertical-align: middle;
 }
+
 #conversationHistory {
     border: 1px solid #ccc;
     padding: 10px;
     margin-top: 10px;
     border-radius: 5px;
-    max-height: 600px;
     overflow-y: auto;
     display: flex;
     flex-direction: column-reverse; /* Show the most recent message on top */
