@@ -3,6 +3,12 @@
 Use `mlx_lm` library to set up a mini web-based chatbot on Mac
 computer with M chip.
 
+## Dependencies
+
+```
+pip install mlx-lm "huggingface-hub[cli]" accelerate flask flask-session torch transformers
+```
+
 ## Steps
 
 ### 1. Run `mlx_lm.server` 
