@@ -25,7 +25,7 @@ huggingface-cli login
 Run 
 
 ```bash
-mlx_lm.server --model mlx-community/mlx-community/Meta-Llama-3-8B-Instruct-4bit
+mlx_lm.server --model mlx-community/Meta-Llama-3-8B-Instruct-4bit
 
 ```
 
@@ -36,7 +36,7 @@ If you have an adaptor, do this (supposing the adaptor is in the
 directory of "lora_adaptor_llama3"):
 
 ```bash
-mlx_lm.server --adapter-path lora_adaptor_llama3 --model mlx-community/mlx-community/Meta-Llama-3-8B-Instruct-4bit
+mlx_lm.server --adapter-path lora_adaptor_llama3 --model mlx-community/Meta-Llama-3-8B-Instruct-4bit
 ```
 
 The server will be running and accessible at http://localhost:8080 .
