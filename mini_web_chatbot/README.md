@@ -9,6 +9,15 @@ computer with M chip.
 pip install mlx-lm "huggingface-hub[cli]" accelerate flask flask-session torch transformers
 ```
 
+You also need to create a huggingface account and create an "Access
+Token" -- this is for downloading the model from huggingface. 
+
+After you create the token, in the command line:
+
+```
+huggingface-cli login
+```
+
 ## Steps
 
 ### 1. Run `mlx_lm.server` 
