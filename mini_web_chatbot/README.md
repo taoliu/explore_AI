@@ -5,6 +5,22 @@ computer with M chip.
 
 ## Dependencies
 
+First, make a conda environment
+
+```
+conda create -n mlxAI python=3.12
+conda activate mlxAI
+```
+
+or make a python virtual env
+
+```
+python -m venv mlxAI
+./mlxAI/bin/activate
+```
+
+Then install these:
+
 ```
 pip install mlx-lm "huggingface-hub[cli]" accelerate flask flask-session torch transformers
 ```
