@@ -68,6 +68,13 @@ Enter the instruction input and click "Generate". Please note, the
 history will be 'memorized' by being reused as input for communicating
 with the LLM.
 
-Click the "Reset" button to clear the conversation history. Or click
-the "Save" button to download the conversation history as a plain text
-file.
+Use "New session" button to create a new chat session.  Use "Rename
+session" to rename it. Click the "Reset session" button to clear the
+conversation history. Click the "Save session" button to download the
+conversation history as a plain text file. Use "Delete session" to
+remove the chat session. All chat sessions are saved in your own
+computer.
+
+### Demo
+
+![Demo screenshot](./demo.png?raw=true "Demo site")
