@@ -18,6 +18,11 @@ $(document).ready(function(){
         $('#loading').hide();
     }
 
+    // Scroll to the bottom of the conversation history
+    function scrollToBottom() {
+        $('#conversationHistory').scrollTop($('#conversationHistory')[0].scrollHeight);
+    }
+
     // Initially hide the loading animation
     $('#loading').hide();
 
@@ -25,10 +30,17 @@ $(document).ready(function(){
     function loadSessions() {
         const sessionSelect = $('#sessionSelect');
         sessionSelect.empty();
-        Object.keys(localStorage).forEach(function(key) {
+        const sessions = Object.keys(localStorage);
+        sessions.forEach(function(key) {
             const sessionData = JSON.parse(localStorage.getItem(key));
             sessionSelect.append(new Option(sessionData.name, key));
         });
+
+        // Load the most recent session if it exists
+        if (sessions.length > 0) {
+            const mostRecentSession = sessions[sessions.length - 1];
+            sessionSelect.val(mostRecentSession).change();
+        }
     }
 
     // Create a new session
@@ -52,6 +64,20 @@ $(document).ready(function(){
         }
     });
 
+    // Rename a session
+    $('#renameSessionButton').on('click', function() {
+        if (currentSession) {
+            const newName = prompt('Enter a new name for this session:');
+            if (newName) {
+                const sessionData = JSON.parse(localStorage.getItem(currentSession) || '{}');
+                sessionData.name = newName;
+                localStorage.setItem(currentSession, JSON.stringify(sessionData));
+                loadSessions();
+                $('#sessionSelect').val(currentSession);
+            }
+        }
+    });
+
     // Load a session
     $('#sessionSelect').on('change', function() {
         currentSession = $(this).val();
@@ -62,16 +88,18 @@ $(document).ready(function(){
             const label = message.role === 'user' ? 'You' : 'System';
             $('#conversationHistory').prepend(`<div class="message-box ${messageClass}"><strong>${label}:</strong> ${marked.parse(message.content)}</div>`);
         });
-        MathJax.typesetPromise(); // Re-render MathJax content
+        scrollToBottom();
     });
 
     // Delete a session
     $('#deleteSessionButton').on('click', function() {
         if (currentSession) {
-            localStorage.removeItem(currentSession);
-            loadSessions();
-            $('#conversationHistory').empty();
-            currentSession = null;
+            if (confirm('Are you sure you want to delete this session? This action cannot be undone.')) {
+                localStorage.removeItem(currentSession);
+                loadSessions();
+                $('#conversationHistory').empty();
+                currentSession = null;
+            }
         }
     });
 
@@ -79,6 +107,8 @@ $(document).ready(function(){
     $('#generateForm').on('submit', function(event){
         event.preventDefault();
         const instruction = $('#instructionInput').val();
+        const temperature = parseFloat($('#temperatureInput').val());
+        const maxTokens = parseInt($('#maxTokensInput').val());
         
         startLoading();
 
@@ -98,8 +128,8 @@ $(document).ready(function(){
             contentType: 'application/json',
             data: JSON.stringify({
                 messages: sessionData.history,
-                temperature: 0.1,
-                max_tokens: 8000
+                temperature: temperature,
+                max_tokens: maxTokens
             }),
             success: function(response){
                 stopLoading();
@@ -113,7 +143,7 @@ $(document).ready(function(){
                     $('#conversationHistory').prepend(`<div class="message-box user-message"><strong>You:</strong> ${marked.parse(instruction)}</div>`);
                     $('#conversationHistory').prepend(`<div class="message-box system-message"><strong>System:</strong> ${renderedHTML}</div>`);
                     $('#instructionInput').val(''); // Clear the input field
-                    MathJax.typesetPromise(); // Re-render MathJax content
+                    scrollToBottom(); // Scroll to the bottom after new output
                 } else {
                     $('#conversationHistory').prepend('<p>No generated text found.</p>');
                 }
@@ -129,10 +159,12 @@ $(document).ready(function(){
     // Reset Button Click Handler
     $('#resetButton').on('click', function(){
         if (currentSession) {
-            const sessionData = JSON.parse(localStorage.getItem(currentSession) || '{}');
-            sessionData.history = [];
-            localStorage.setItem(currentSession, JSON.stringify(sessionData));
-            $('#conversationHistory').empty();
+            if (confirm('Are you sure you want to reset this session? This action will wipe off the content in the current session.')) {
+                const sessionData = JSON.parse(localStorage.getItem(currentSession) || '{}');
+                sessionData.history = [];
+                localStorage.setItem(currentSession, JSON.stringify(sessionData));
+                $('#conversationHistory').empty();
+            }
         }
     });
 
