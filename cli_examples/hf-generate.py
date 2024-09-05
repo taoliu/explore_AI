@@ -6,7 +6,7 @@
 # ------------------------
 # Load necessary libraries
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, QuantoConfig
 
 torch.random.manual_seed(0)
 
@@ -18,12 +18,17 @@ model_id = "microsoft/biogpt"
 tokenizer_id = "microsoft/biogpt"
 peft_model_id = None
 
+# quantized model configuration
+# for quanto
+quantization_config = QuantoConfig(weights="int4")
+
 # -------------------------
 # load model
 model = AutoModelForCausalLM.from_pretrained(
         model_id,
         device_map=device,
         torch_dtype="auto",
+        quantization_config=quantization_config,
         trust_remote_code=True,
     )
 

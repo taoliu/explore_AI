@@ -10,12 +10,12 @@ from mlx_lm import load, generate
 
 # -------------------------
 # specify model names
-model_id = "mlx-community/Meta-Llama-3-8B-Instruct-4bit"   # This has to be a 'converted' mlx model
+model_id = "mlx-community/gemma-2-9b-it-4bit"   # This has to be a 'converted' mlx model
 # examples are:
 # meta llama3: mlx-community/Meta-Llama-3-8B-Instruct-4bit
 # apple openELM: mlx-community/OpenELM-1_1B-Instruct-4bit
 # microsoft phi3: mlx-community/Phi-3-mini-128k-instruct-4bit
-# google gemma: mlx-community/gemma-1.1-7b-it-4bit
+# google gemma2: mlx-community/gemma-2-9b-it-4bit
 # 
 
 # assign to anything other than None, if an adaptor is wanted. This
@@ -32,8 +32,8 @@ model_config = {}
 #tokenizer_config = {}
 #tokenizer_config = {"trust_remote_code": True}
 #tokenizer_config = {"eos_token": "<|end|>"}   # this is for Phi-3
-tokenizer_config = {"eos_token": "<|eot_id|>", "trust_remote_code": True} # this is for Llama3
-#tokenizer_config = {"eos_token": "<eos>", "trust_remote_code": True} # this is for Gemma
+#tokenizer_config = {"eos_token": "<|eot_id|>", "trust_remote_code": True} # this is for Llama3
+tokenizer_config = {"eos_token": "<end_of_turn>", "trust_remote_code": True} # this is for Gemma2
 
 
 # -------------------------
@@ -66,7 +66,7 @@ for i, msg in enumerate(input_messages):
     if hasattr(t_tokenizer, "apply_chat_template") and t_tokenizer.chat_template:
         prompt = t_tokenizer.apply_chat_template([{'role': 'user', 'content': msg}], tokenize=False, add_generation_prompt=True) #apply chat template
         response = generate(t_model, t_tokenizer, prompt=prompt, temp=0.1, verbose=False)
-        print(response)
+        #print(response)
         # we will add the first conversation to the next prompt (perhaps
         # one conversation is enough, but I want to show how conversation
         # history/memory works

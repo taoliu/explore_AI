@@ -88,6 +88,7 @@ $(document).ready(function(){
             const label = message.role === 'user' ? 'You' : 'System';
             $('#conversationHistory').prepend(`<div class="message-box ${messageClass}"><strong>${label}:</strong> ${marked.parse(message.content)}</div>`);
         });
+        MathJax.typeset();
         scrollToBottom();
     });
 
@@ -136,7 +137,6 @@ $(document).ready(function(){
                 if (response.choices && response.choices.length > 0) {
                     const generated_text = response.choices[0].message.content.trim();
                     const renderedHTML = marked.parse(generated_text);
-
                     sessionData.history.push({"role": "assistant", "content": generated_text});
                     localStorage.setItem(currentSession, JSON.stringify(sessionData));
 
@@ -147,6 +147,7 @@ $(document).ready(function(){
                 } else {
                     $('#conversationHistory').prepend('<p>No generated text found.</p>');
                 }
+		MathJax.typeset();
             },
             error: function(error){
                 stopLoading();

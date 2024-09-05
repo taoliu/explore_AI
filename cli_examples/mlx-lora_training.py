@@ -29,8 +29,8 @@ TR_CONFIG = {
     "data": "training_data/",             # Directory with {train, valid, test}.jsonl files
     "seed": 0,                            # The PRNG seed
     "lora_layers": 16,                    # Number of layers to fine-tune
-    "batch_size": 8,                      # Minibatch size.
-    "iters": 100,                         # Iterations to train for.
+    "batch_size": 4,                      # Minibatch size.
+    "iters": 50,                          # Iterations to train for.
     "val_batches": -1,                    # Number of validation batches, -1 uses the entire validation set.
     "learning_rate": 1e-5,                # Adam learning rate.
     "steps_per_report": 10,               # Number of training steps between loss reporting.

@@ -42,7 +42,7 @@ huggingface-cli login
 Run the following command:
 
 ```bash
-mlx_lm.server --model mlx-community/Meta-Llama-3-8B-Instruct-4bit
+mlx_lm.server --model mlx-community/Meta-Llama-3.1-8B-Instruct-4bit
 
 ```
 
@@ -53,7 +53,7 @@ If you have an adapter, run the following command (supposing the
 adapter is in the directory "lora_adaptor_llama3"):
 
 ```bash
-mlx_lm.server --adapter-path lora_adaptor_llama3 --model mlx-community/Meta-Llama-3-8B-Instruct-4bit
+mlx_lm.server --adapter-path lora_adaptor_llama3 --model mlx-community/Meta-Llama-3.1-8B-Instruct-4bit
 ```
 
 The server API will be running and accessible at
