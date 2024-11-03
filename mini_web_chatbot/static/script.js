@@ -5,6 +5,36 @@ $(document).ready(function(){
     let spinnerInterval;
     let currentSession = null;
 
+    // Check login status
+    function checkLoginStatus() {
+        $.ajax({
+            url: '/oauth2/auth',  // oauth2-proxy's auth endpoint
+            method: 'GET',
+            success: function(data, status, xhr) {
+                const userEmail = xhr.getResponseHeader("X-Auth-Request-Email");  // oauth2-proxy header
+                if (userEmail) {
+                    $('#userStatus').text(`Logged in as: ${userEmail}`);
+                    $('#logoutButton').show();
+                } else {
+                    $('#userStatus').text('Not logged in');
+                    $('#logoutButton').hide();
+                }
+            },
+            error: function() {
+                $('#userStatus').text('Not logged in');
+                $('#logoutButton').hide();
+            }
+        });
+    }
+
+    // Logout functionality
+    $('#logoutButton').on('click', function() {
+        window.location.href = '/oauth2/sign_out';  // Redirects to oauth2-proxy logout
+    });
+
+    // Call the login status check on page load
+    checkLoginStatus();
+    
     function startLoading() {
         $('#loading').show();
         spinnerInterval = setInterval(function() {
@@ -88,7 +118,6 @@ $(document).ready(function(){
             const label = message.role === 'user' ? 'You' : 'System';
             $('#conversationHistory').prepend(`<div class="message-box ${messageClass}"><strong>${label}:</strong> ${marked.parse(message.content)}</div>`);
         });
-        MathJax.typeset();
         scrollToBottom();
     });
 
@@ -124,7 +153,7 @@ $(document).ready(function(){
         localStorage.setItem(currentSession, JSON.stringify(sessionData));
 
         $.ajax({
-            url: 'http://localhost:8080/v1/chat/completions',
+            url: 'https://mini.biomisc.org/api/v1/chat/completions',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -137,6 +166,7 @@ $(document).ready(function(){
                 if (response.choices && response.choices.length > 0) {
                     const generated_text = response.choices[0].message.content.trim();
                     const renderedHTML = marked.parse(generated_text);
+
                     sessionData.history.push({"role": "assistant", "content": generated_text});
                     localStorage.setItem(currentSession, JSON.stringify(sessionData));
 
@@ -147,7 +177,6 @@ $(document).ready(function(){
                 } else {
                     $('#conversationHistory').prepend('<p>No generated text found.</p>');
                 }
-		MathJax.typeset();
             },
             error: function(error){
                 stopLoading();
